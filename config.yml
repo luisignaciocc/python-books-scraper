@@ -1,12 +1,14 @@
-env: prod
+env: local
 auth:
   local:
     mysql-host: 127.0.0.1
+    mysql-port: 3306
     mysql-user: root
     mysql-pass: 12345678
     mysql-db: books_scraper
   prod:
-    mysql-host: 127.0.0.1
-    mysql-user: root
-    mysql-pass: 12345678
-    mysql-db: books_scraper
+    mysql-host:
+    mysql-port:
+    mysql-user:
+    mysql-pass:
+    mysql-db:
