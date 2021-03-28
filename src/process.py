@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from src.utils.scrapers import ScrapyAgent
-from src.models.categories_model import Category, migrate_table
+from src.models.categories_model import Category
 
 class Process(ScrapyAgent):
 

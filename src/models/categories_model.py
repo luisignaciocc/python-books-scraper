@@ -1,8 +1,6 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, func
+from src.models.base import Base
 from sqlalchemy.sql.elements import Null
-
-Base = declarative_base()
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -14,7 +12,3 @@ class Category(Base):
     
     def __str__(self):
         return self.name
-
-def migrate_table(engine):
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
