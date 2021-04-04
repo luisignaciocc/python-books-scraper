@@ -27,8 +27,10 @@ class Process(ScrapyAgent):
             cfg['auth'][cfg['env']]['mysql-port'],
             cfg['auth'][cfg['env']]['mysql-db'])
 
+        self.logger.info('--* ALEMBIC MIGRATION *--')
         alembicArgs = ['--raiseerr', '-x', f'dbUrl={SQLALCHEMY_DATABASE_URI}', 'upgrade', 'head']
         alembic.config.main(argv=alembicArgs)
+        self.logger.info('--* ALEMBIC MIGRATION *--')
 
         self.engine = create_engine(SQLALCHEMY_DATABASE_URI)
         Session = sessionmaker(self.engine)
@@ -36,22 +38,42 @@ class Process(ScrapyAgent):
 
 
     def process(self):
-        self.logger.info(f'PROCESS STARTED')
-        categories_data = self.get_crawler_data('categories')
+        self.logger.info(' -----------------')
+        self.logger.info('| PROCESS STARTED |')
+        self.logger.info(' -----------------')
+
+        categories_data = self.get_crawler_categories_data()
         for item in categories_data:
-            category = Category(
-                name = item['name'],
-                url = item['url']
-            )
-            self.session.add(category)
-            try:
-                self.session.commit()
-            except IntegrityError:
-                self.logger.error(f'{category} already inserted')
-                self.session.rollback()
+            
+            category = self.session.query(Category).filter(Category.name.like(item['name'])).one_or_none()
+            
+            if category is None:
+                category = Category(
+                    name = item['name'],
+                    url = item['url']
+                )
+                self.session.add(category)
+                try:
+                    self.session.commit()
+                except IntegrityError:
+                    self.logger.error(f'{category.name} already inserted')
+                    self.session.rollback()
+                else:
+                    self.logger.info(f'{category.name} inserted')
+                    category_id = category.id
+                    category_name = category.name
             else:
-                self.logger.info(f'{category} inserted')
-        self.logger.info(f'PROCESS FINISHED')
+                self.logger.error(f'{category.name} already inserted')
+                category_id = category.id
+                category_name = category.name
+
+            print(category_id)
+            print(category_name)
+            books_data = self.get_crawler_books_data(category)
+
+        self.logger.info(' ------------------')
+        self.logger.info('| PROCESS FINISHED |')
+        self.logger.info(' ------------------')
 
 
 if __name__ == '__main__':

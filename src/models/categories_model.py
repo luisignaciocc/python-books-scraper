@@ -9,6 +9,3 @@ class Category(Base):
     url = Column(String(100), nullable=False, unique=True)
     created_at = Column(DateTime(), default=func.current_timestamp())
     updated_at = Column(DateTime(), nullable=True)
-    
-    def __str__(self):
-        return self.name

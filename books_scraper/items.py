@@ -9,3 +9,10 @@ import scrapy
 class Category(scrapy.Item):
     name = scrapy.Field()
     url = scrapy.Field()
+
+class Book(scrapy.Item):
+    url = scrapy.Field()
+    name = scrapy.Field()
+    price = scrapy.Field()
+    description = scrapy.Field()
+    image_url = scrapy.Field()
