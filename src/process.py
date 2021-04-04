@@ -1,5 +1,6 @@
 import datetime
 import logging
+import alembic.config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
@@ -18,13 +19,17 @@ class Process(ScrapyAgent):
             datefmt='%Y-%m-%d %H:%M:%S',
             format='%(asctime)s %(levelname)-8s %(message)s')
         self.logger = logging.getLogger('scraper')
-
+        
         SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@{}:{}/{}'.format(
             cfg['auth'][cfg['env']]['mysql-user'],
             cfg['auth'][cfg['env']]['mysql-pass'],
             cfg['auth'][cfg['env']]['mysql-host'],
             cfg['auth'][cfg['env']]['mysql-port'],
             cfg['auth'][cfg['env']]['mysql-db'])
+
+        alembicArgs = ['--raiseerr', '-x', f'dbUrl={SQLALCHEMY_DATABASE_URI}', 'upgrade', 'head']
+        alembic.config.main(argv=alembicArgs)
+
         self.engine = create_engine(SQLALCHEMY_DATABASE_URI)
         Session = sessionmaker(self.engine)
         self.session = Session()

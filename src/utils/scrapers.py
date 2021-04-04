@@ -17,7 +17,4 @@ class ScrapyAgent():
 
                 data = json.load(json_file)
 
-                if os.path.exists(json_file_path):
-                    os.remove(json_file_path)
-
                 return data

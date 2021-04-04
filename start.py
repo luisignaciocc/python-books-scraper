@@ -11,6 +11,15 @@ class Start():
         with open(name_yml, 'r') as ymlfile:
             self.cfg = yaml.load(ymlfile,Loader=yaml.BaseLoader)
 
+        PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+        LOGS_DIR = os.path.join(PROJECT_ROOT, 'log')
+        JSON_CRAWLER_DIR = os.path.join(PROJECT_ROOT, 'scrapers_output')
+
+        if not os.path.exists(LOGS_DIR):
+            os.makedirs(LOGS_DIR)
+        if not os.path.exists(JSON_CRAWLER_DIR):
+            os.makedirs(JSON_CRAWLER_DIR)
+
     def main(self):
         Process(self.cfg).process()
 
