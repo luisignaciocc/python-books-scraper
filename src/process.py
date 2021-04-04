@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from src.utils.scrapers import ScrapyAgent
 from src.models.categories_model import Category
+from src.models.books_model import Book
 
 class Process(ScrapyAgent):
 
@@ -56,20 +57,34 @@ class Process(ScrapyAgent):
                 try:
                     self.session.commit()
                 except IntegrityError:
-                    self.logger.error(f'{category.name} already inserted')
+                    self.logger.error(f'category {category.name} already inserted')
                     self.session.rollback()
                 else:
-                    self.logger.info(f'{category.name} inserted')
+                    self.logger.info(f'category {category.name} inserted')
                     category_id = category.id
-                    category_name = category.name
             else:
-                self.logger.error(f'{category.name} already inserted')
+                self.logger.error(f'category {category.name} already inserted')
                 category_id = category.id
-                category_name = category.name
 
-            print(category_id)
-            print(category_name)
             books_data = self.get_crawler_books_data(category)
+            
+            for book in books_data:
+                book = Book(
+                    name = book["name"],
+                    url = book["url"],
+                    price = book["price"],
+                    description = book["description"],
+                    image_url = book["image_url"],
+                    category_id = category_id
+                )
+                self.session.add(book)
+                try:
+                    self.session.commit()
+                except IntegrityError:
+                    self.logger.error(f'book {book.name} already inserted')
+                    self.session.rollback()
+                else:
+                    self.logger.info(f'book {book.name} inserted')
 
         self.logger.info(' ------------------')
         self.logger.info('| PROCESS FINISHED |')
