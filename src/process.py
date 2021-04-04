@@ -36,6 +36,7 @@ class Process(ScrapyAgent):
 
 
     def process(self):
+        self.logger.info(f'PROCESS STARTED')
         categories_data = self.get_crawler_data('categories')
         for item in categories_data:
             category = Category(
@@ -50,6 +51,7 @@ class Process(ScrapyAgent):
                 self.session.rollback()
             else:
                 self.logger.info(f'{category} inserted')
+        self.logger.info(f'PROCESS FINISHED')
 
 
 if __name__ == '__main__':
