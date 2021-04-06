@@ -1,0 +1,37 @@
+version: "3"
+services:
+  mysql_db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpass"
+      MYSQL_DATABASE: "books_scraper"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "12345678"
+    networks:
+      - app-tier
+    expose:
+      - 3306
+    ports:
+      - "3336:3306"
+    command:
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
+
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql_db
+    networks:
+      - app-tier
+    command: sh -c "/wait && python start.py"
+    environment:
+      WAIT_HOSTS: mysql_db:3306
+
+networks:
+  app-tier:
+    driver: bridge

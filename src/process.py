@@ -21,7 +21,7 @@ class Process(ScrapyAgent):
             format='%(asctime)s %(levelname)-8s %(message)s')
         self.logger = logging.getLogger('scraper')
         
-        SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@{}:{}/{}'.format(
+        SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(
             cfg['auth'][cfg['env']]['mysql-user'],
             cfg['auth'][cfg['env']]['mysql-pass'],
             cfg['auth'][cfg['env']]['mysql-host'],
