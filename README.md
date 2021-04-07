@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ```
 
 ```bash
-python 3.6 start.py
+python3.6 start.py
 ```
 
 ## License
