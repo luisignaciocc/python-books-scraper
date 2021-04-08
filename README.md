@@ -16,7 +16,7 @@ docker-compose up
 
 ### Without Docker
 
-Configure the respective database connection (MySQL) and enviroment on the config.yml file.
+You'll need to create and activate a new python3.6 virtual enviroment and configure the respective MySQL database connection on the config.yml file.
 
 ```bash
 pip install -r requirements.txt
