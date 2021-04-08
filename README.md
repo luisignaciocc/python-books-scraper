@@ -4,9 +4,7 @@ Scraper build with scrapy to get data from [here](https://books.toscrape.com/).
 
 ## Usage
 
-You can run this project with or without Docker.
-
-### With Docker
+### With Docker Compose
 
 On the project root
 
