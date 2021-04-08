@@ -1,6 +1,12 @@
 # Python Books Scraper
 
-Scraper build with scrapy to get data from [here](https://books.toscrape.com/).
+Scraper build to get data from [here](https://books.toscrape.com/).
+
+## Build with
+
+* [Scrapy](https://scrapy.org)
+* [SQLAlchemy](https://www.sqlalchemy.org)
+* [Alembic](https://alembic.sqlalchemy.org/en/latest)
 
 ## Usage
 
@@ -23,6 +29,8 @@ pip install -r requirements.txt
 ```bash
 python3.6 start.py
 ```
+
+#### After execution, the data will be parsed in the database. There is a table for books and a table for categories. The exposed port of the database in the Docker container is 3336 (MySQL)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
