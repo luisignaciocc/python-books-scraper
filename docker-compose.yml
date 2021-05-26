@@ -3,21 +3,23 @@ services:
   mysql_db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: "rootpass"
       MYSQL_DATABASE: "books_scraper"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "12345678"
+      MYSQL_ROOT_PASSWORD: BjksXqdHWKGKuMA9
+      MYSQL_ROOT_HOST: "%"
     networks:
       - app-tier
     expose:
       - 3306
     ports:
       - "3336:3306"
+    volumes:
+      - books-scraper-db:/var/lib/mysql
     command:
       [
         "mysqld",
         "--character-set-server=utf8mb4",
         "--collation-server=utf8mb4_unicode_ci",
+        "--default-authentication-plugin=mysql_native_password",
       ]
 
   scraper:
@@ -31,6 +33,9 @@ services:
     command: sh -c "/wait && python start.py"
     environment:
       WAIT_HOSTS: mysql_db:3306
+
+volumes:
+  books-scraper-db:
 
 networks:
   app-tier:

@@ -1,10 +1,10 @@
 env: local
 auth:
   local:
-    mysql-host: 127.0.0.1
+    mysql-host: mysql_db
     mysql-port: 3306
     mysql-user: root
-    mysql-pass: 12345678
+    mysql-pass: BjksXqdHWKGKuMA9
     mysql-db: books_scraper
   prod:
     mysql-host:
